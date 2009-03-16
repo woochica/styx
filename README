@@ -1,0 +1,3 @@
+Place `styx.el` somewhere in your path, and add the following to your .emacs:
+
+(load "/path/to/styx.el")
