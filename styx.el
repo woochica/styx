@@ -1,9 +1,9 @@
 (defcustom styx/restore-file "~/.styx-restore"
-  "Path of restore file contains saved buffer points."
+  "Path of restore file containing saved buffer points."
   :type 'file)
 
 (defvar styx/buffer-positions nil
-  "In memory representation of saved buffer points.")
+  "List of saved buffer points.")
 
 (defun stxy/read-buffer-positions ()
   "Read buffer positions from `styx/restore-file'.
@@ -18,18 +18,15 @@ it when future calls."
        (read db)))))
 
 (defun styx/save-buffer-position ()
-  "Save point in current buffer."
-  (let* ((buff (current-buffer))
-         (db (stxy/read-buffer-positions))
-         (file (buffer-file-name (current-buffer)))
-         (node (cons file (point))))
+  "Save point of current buffer."
+  (let* ((db (stxy/read-buffer-positions))
+         (file (buffer-file-name (current-buffer))))
     (when file
       (if (assoc file db)
           (setf (cdr (assoc file db)) (point))
-        (add-to-list 'db node))
+        (add-to-list 'db (cons file (point))))
       (setq styx/buffer-positions db)
-      (styx/write-buffer-positions)))
-  nil)
+      (styx/write-buffer-positions))))
 
 (defun styx/write-buffer-positions ()
   "Write value of `styx/buffer-positions' to `styx/restore-file'."
@@ -37,7 +34,7 @@ it when future calls."
     (insert (format "%S" styx/buffer-positions))))
 
 (defun styx/restore-buffer-position ()
-  "Restore point for current buffer."
+  "Restore point in current buffer."
   (let* ((buff (current-buffer))
          (db (stxy/read-buffer-positions))
          (node (assoc (expand-file-name (buffer-file-name buff)) db)))
