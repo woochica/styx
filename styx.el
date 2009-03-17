@@ -21,7 +21,8 @@ it when future calls."
   "Save point of current buffer."
   (let* ((db (stxy/read-buffer-positions))
          (file (buffer-file-name (current-buffer))))
-    (when file
+    (if (or (not file) (string= file styx/restore-file))
+        ()
       (if (assoc file db)
           (setf (cdr (assoc file db)) (point))
         (add-to-list 'db (cons file (point))))
