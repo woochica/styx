@@ -5,7 +5,7 @@
 (defvar styx/buffer-positions nil
   "List of saved buffer points.")
 
-(defun stxy/read-buffer-positions ()
+(defun styx/read-buffer-positions ()
   "Read buffer positions from `styx/restore-file'.
 
 Once file was read, save it in `styx/buffer-positions' and return
@@ -19,7 +19,7 @@ it when future calls."
 
 (defun styx/save-buffer-position ()
   "Save point of current buffer."
-  (let* ((db (stxy/read-buffer-positions))
+  (let* ((db (styx/read-buffer-positions))
          (file (buffer-file-name (current-buffer))))
     (if (or (not file) (string= file styx/restore-file))
         ()
@@ -37,7 +37,7 @@ it when future calls."
 (defun styx/restore-buffer-position ()
   "Restore point in current buffer."
   (let* ((buff (current-buffer))
-         (db (stxy/read-buffer-positions))
+         (db (styx/read-buffer-positions))
          (node (assoc (expand-file-name (buffer-file-name buff)) db)))
     (when node
       (switch-to-buffer buff)
