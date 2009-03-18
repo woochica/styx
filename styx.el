@@ -1,3 +1,5 @@
+(require 'cl)
+
 (defcustom styx/restore-file "~/.styx-restore"
   "Path of restore file containing saved buffer points."
   :type 'file)
